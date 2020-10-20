@@ -3,7 +3,7 @@ import api from "../api/quizApi";
 
 const WelcomePage = ({ mode }) => {
    console.log(mode);
-   api.getQuizData1();
+   api.getQuizData();
 
    return <div>welcome</div>;
 };
