@@ -1,36 +1,33 @@
 import React from "react";
 import "./WelcomePage.css";
-import api from "../api/quizApi";
+import quizApi from "../api/quizApi";
 
 class WelcomePage extends React.Component {
    state = { name: "" };
-   // api.getQuizData();
 
    onNameChange = (event) => {
       const updatedValue = event.target.value;
       this.setState({ name: updatedValue });
    };
 
-   onStartClick = () => {
-      //create user / friend in endpoint by mode
-      // if response succeed get user id and open new quiz componenet
-      this.props.history.push("/15/51/quiz");
+   onStartClick = async () => {
+      if (this.state.name.length <= 1) {
+         return console.log("Enter valid name -> more than 1 char");
+      }
       if (this.props.mode === "newUser") {
-         //create user in endpoint
-         //response succeed
-         //return open new quiz /:userId/quiz
+         const userId = await quizApi.createUser(this.state.name);
+         return this.props.history.push(`/${userId}/quiz`);
+         //TODO catch network error and update UI
       }
       if (this.props.mode === "addFriend") {
-         //get user id from url
-         //create friend in endpoint
-         //response succeed
-         //return open new quiz /:userId/:friendId/quiz
+         const userId = this.props.match.params.userId;
+         const friendId = await quizApi.createFriend(userId, this.state.name);
+         return this.props.history.push(`/${userId}/${friendId}/quiz`);
+         //TODO catch network error and update UI
       }
    };
 
    render() {
-      //TODO: Set instruction's by mode
-      console.log(this.props.mode);
       return (
          <div>
             <div className="instruction">
