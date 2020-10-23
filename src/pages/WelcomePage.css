@@ -1,0 +1,21 @@
+.instruction {
+   display: flex;
+   flex-direction: column;
+   gap: 5px;
+}
+.instruction__title {
+   margin-bottom: 5px;
+   font-size: 20px;
+   font-weight: 700;
+}
+
+/* Input Area */
+.user-form__name-input {
+   padding: 5px 10px;
+   border: 1px solid gray;
+   border-radius: 5px;
+   outline: none;
+}
+.user-form__name-input:focus {
+   border: 1px solid #feca1d;
+}
