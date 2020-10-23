@@ -1,4 +1,3 @@
-import { wait } from "@testing-library/react";
 import axios from "axios";
 
 //TODO - Error handling
@@ -19,8 +18,22 @@ const createFriend = async (userId, friendName) => {
    return response.data.friendId;
 };
 
+const updateUserQuizResults = async (userId, quizResults) => {
+   const response = await axios.put(`${BASE_URL}/user/${userId}/quiz`, quizResults);
+   console.log(response);
+   //TODO test for valid quiz results
+};
+
+const updateFriendQuestionResult = async (userId, friendId, questionResult) => {
+   const response = await axios.put(`${BASE_URL}/user/${userId}/friends/${friendId}`, questionResult);
+   return response.data.userAnswerId;
+   //TODO test for valid question results
+};
+
 export default {
    getQuizData,
    createUser,
    createFriend,
+   updateUserQuizResults,
+   updateFriendQuestionResult,
 };

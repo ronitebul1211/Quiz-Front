@@ -16,15 +16,17 @@ class QuizPage extends React.Component {
       this.setState({ currentAnswerId: answerId }, () => console.log(this.state));
    };
 
-   onContinueClick = () => {
-      //Check is it last?
-
+   onContinueClick = async () => {
       if (this.props.mode === "newUser") {
          this.saveQuizResult();
-         if (!this.isQuizFinished()) {
-            this.renderNextQuestion();
-         } else {
-         }
+         this.isQuizFinished() ? await this.sendQuizResultsToEndPoint() : this.renderNextQuestion();
+         return;
+      }
+
+      if (this.props.mode === "addFriend") {
+         await this.sendQuestionResultToEndPoint();
+         this.isQuizFinished() ? console.log("open last page...") : this.renderNextQuestion();
+         return;
       }
    };
 
@@ -34,10 +36,24 @@ class QuizPage extends React.Component {
    };
    saveQuizResult = () => {
       const quizResultsCopy = [...this.state.quizResults];
+      const currentQuestionData = this.getCurrentInQuestionDataObject();
+      quizResultsCopy.push(currentQuestionData);
+      this.setState({ quizResults: quizResultsCopy });
+   };
+   sendQuizResultsToEndPoint = async () => {
+      const userId = this.props.match.params.userId;
+      await quizApi.updateUserQuizResults(userId, this.state.quizResults);
+   };
+   sendQuestionResultToEndPoint = async () => {
+      const userId = this.props.match.params.userId;
+      const friendId = this.props.match.params.friendId;
+      const currentQuestionData = this.getCurrentInQuestionDataObject();
+      await quizApi.updateFriendQuestionResult(userId, friendId, currentQuestionData);
+   };
+   getCurrentInQuestionDataObject = () => {
       const questionId = this.getCurrentQuestionId();
       const answerId = this.state.currentAnswerId;
-      quizResultsCopy.push({ questionId, answerId });
-      this.setState({ quizResults: quizResultsCopy });
+      return { questionId, answerId };
    };
    getCurrentQuestionId = () => {
       return this.state.quizData[this.state.currentQuestionIndex].question.id;
