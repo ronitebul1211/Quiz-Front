@@ -30,10 +30,16 @@ const updateFriendQuestionResult = async (userId, friendId, questionResult) => {
    //TODO test for valid question results
 };
 
+const getRanks = async (userId) => {
+   const response = await axios.get(`${BASE_URL}/user/${userId}/ranks`);
+   return response.data.friendsRanks;
+};
+
 export default {
    getQuizData,
    createUser,
    createFriend,
    updateUserQuizResults,
    updateFriendQuestionResult,
+   getRanks,
 };

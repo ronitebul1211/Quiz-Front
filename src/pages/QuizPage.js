@@ -19,14 +19,22 @@ class QuizPage extends React.Component {
    onContinueClick = async () => {
       if (this.props.mode === "newUser") {
          this.saveQuizResult();
-         this.isQuizFinished() ? await this.sendQuizResultsToEndPoint() : this.renderNextQuestion();
-         return;
+         if (this.isQuizFinished()) {
+            //TODO fix bug -> when user finish the last result doesn't sent
+            await this.sendQuizResultsToEndPoint();
+            return this.props.history.push(`/${this.getCurrentUserId()}/my-ranks`);
+         } else {
+            return this.renderNextQuestion();
+         }
       }
 
       if (this.props.mode === "addFriend") {
          await this.sendQuestionResultToEndPoint();
-         this.isQuizFinished() ? console.log("open last page...") : this.renderNextQuestion();
-         return;
+         if (this.isQuizFinished()) {
+            return this.props.history.push(`/${this.getCurrentUserId()}/my-friend-ranks`);
+         } else {
+            return this.renderNextQuestion();
+         }
       }
    };
 
@@ -41,11 +49,11 @@ class QuizPage extends React.Component {
       this.setState({ quizResults: quizResultsCopy });
    };
    sendQuizResultsToEndPoint = async () => {
-      const userId = this.props.match.params.userId;
-      await quizApi.updateUserQuizResults(userId, this.state.quizResults);
+      console.log(this.state.quizResults);
+      await quizApi.updateUserQuizResults(this.getCurrentUserId(), this.state.quizResults);
    };
    sendQuestionResultToEndPoint = async () => {
-      const userId = this.props.match.params.userId;
+      const userId = this.getCurrentUserId();
       const friendId = this.props.match.params.friendId;
       const currentQuestionData = this.getCurrentInQuestionDataObject();
       await quizApi.updateFriendQuestionResult(userId, friendId, currentQuestionData);
@@ -62,7 +70,11 @@ class QuizPage extends React.Component {
       return this.state.currentQuestionIndex === this.state.quizData.length - 1;
    };
 
-   render() {
+   getCurrentUserId = () => {
+      return this.props.match.params.userId;
+   };
+
+   renderQuestion = () => {
       let questionUi;
       if (this.state.quizData.length > 0) {
          questionUi = (
@@ -79,7 +91,11 @@ class QuizPage extends React.Component {
       } else {
          questionUi = <React.Fragment>בטעינה...</React.Fragment>;
       }
-      return <div>{questionUi}</div>;
+      return questionUi;
+   };
+
+   render() {
+      return <div>{this.renderQuestion()}</div>;
    }
 }
 

@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 //Components
 import WelcomePage from "./pages/WelcomePage";
 import QuizPage from "./pages/QuizPage";
+import QuizResultsPage from "./pages/QuizResultsPage";
 
 const App = () => {
    return (
@@ -17,6 +18,16 @@ const App = () => {
                path="/:userId/:friendId/quiz"
                exact
                render={(props) => <QuizPage {...props} mode="addFriend" />}
+            />
+            <Route
+               path="/:userId/my-ranks"
+               exact
+               render={(props) => <QuizResultsPage {...props} mode="newUser" />}
+            />
+            <Route
+               path="/:userId/my-friend-ranks"
+               exact
+               render={(props) => <QuizResultsPage {...props} mode="addFriend" />}
             />
          </div>
       </BrowserRouter>

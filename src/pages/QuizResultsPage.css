@@ -1,0 +1,72 @@
+.quiz-result-page {
+   display: flex;
+   flex-direction: column;
+}
+.ranks-table {
+   display: grid;
+   border-collapse: collapse;
+   width: 100%;
+   row-gap: 5px;
+   --row-border-style: 1px solid black;
+   --row-border-radius: 5px;
+   padding: 15px;
+   border-radius: 5px;
+   grid-template-columns: 1fr 1fr;
+}
+
+.ranks-table__header,
+.ranks-table__body,
+.ranks-table__row {
+   display: contents;
+   cursor: context-menu;
+}
+
+.ranks-table__header-item,
+.ranks-table__row-item {
+   overflow: hidden; /* Don't let th + td overflow container*/
+   text-overflow: ellipsis; /* Text overflow add dots */
+   white-space: nowrap; /* When text overflow don't start with new line*/
+   padding: 2.5px 5px;
+}
+
+.ranks-table__header-item {
+   text-align: right;
+   background: transparent;
+}
+
+.ranks-table__row-item {
+   background: white;
+   border-top: var(--row-border-style);
+   border-bottom: var(--row-border-style);
+}
+
+.ranks-table__row-item:first-child {
+   border-right: var(--row-border-style);
+   border-top-right-radius: var(--row-border-radius);
+   border-bottom-right-radius: var(--row-border-radius);
+}
+
+.ranks-table__row-item:last-child {
+   border-left: var(--row-border-style);
+   border-top-left-radius: var(--row-border-radius);
+   border-bottom-left-radius: var(--row-border-radius);
+}
+
+.link-box {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+.link-box__header {
+   font-weight: bold;
+}
+.link-box__link {
+   text-decoration: none;
+   align-self: flex-end;
+   color: blue;
+}
+.link-box__lin:hover {
+   text-decoration: none;
+   align-self: flex-end;
+   color: gray;
+}
